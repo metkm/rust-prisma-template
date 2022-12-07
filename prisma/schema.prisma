@@ -1,0 +1,25 @@
+datasource db {
+    provider = "postgresql"
+    url      = ""
+}
+
+generator client {
+    // Corresponds to the cargo alias created earlier
+    provider = "cargo prisma"
+    // The location to generate the client. Is relative to the position of the schema
+    output   = "../src/prisma.rs"
+}
+
+model User {
+    id          Int    @id @default(autoincrement())
+    displayName String
+
+    team   Team? @relation(fields: [teamId], references: [id])
+    teamId Int?
+}
+
+model Team {
+    id         Int    @id @unique @default(autoincrement())
+    team_title String
+    players    User[]
+}
